@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">    
+    <title>Reserva | Condomínio Blue Coast</title>
+</head>
+<body>
+    <main>
+        <div class="bg">
+            <div class="container">
+                <div>
+                    <img src="imagens/bluecoast.jpg" alt="bluecoast">
+                </div>
+                <div class="formularioReserva">
+                    <h1>Reservar</h1>
+                    <form action="reserva" method="post">
+                        <div>
+                            <label for="dataReserva"></label>
+                            <input class="input" type="text" name="dataReserva"  placeholder="Data" id="dataReserva" required>
+                        </div>                         
+                        <div>
+                            <label for="AreaLazer">Área</label>
+                            <select class="select" name="AreaLazer" id="AreaLazer">
+                                <option value="1">1</option>
+                                <option value="2">2</option>                               
+                            </select>                                                  
+                        </div>                                       
+                        <div>
+                            <label for="tipoDeArea">Tipo de Área</label>
+                            <select class="select" name="tipoDeArea" id="tipoDeArea">
+                                <option value="churrasqueira">Churrasqueira</option>
+                                <option value="sauna">Sauna</option>
+                                <option value="salao">Salão de festas</option>
+                            </select>                                                  
+                        </div>                        
+                        <div>
+                            <input class="botao" type="submit" value="enviar">
+                            <input class="botao" type="reset" value="limpar">
+                        </div>                        
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            const formularioReserva = document.querySelector("form");
+            const botao = document.querySelector(".botao");
+            const IDataReserva = document.querySelector("#dataReserva");
+            const IAreaLazer = document.querySelector("#AreaLazer");
+            const ITipoDeArea = document.querySelector("#tipoDeArea");
+
+            function exibirAlerta() {
+                alert("Reservado com sucesso!")
+            }
+
+            function reservar() {
+                
+                fetch("http://localhost:8081/reserva",
+                {
+                    headers: {
+                        "Accept": "application/json",
+                        "Content-Type": "application/json"
+                    },
+                    method: "POST",
+                    body: JSON.stringify({
+                        dataReserva: IDataReserva.value,
+                        AreaLazer: IAreaLazer.value,
+                        tipoDeArea: ITipoDeArea.value,                                   
+                    })
+                }) 
+
+                .then(function (res) { 
+                    if(res.ok) {
+                        exibirAlerta(); 
+                        window.location = "index.html";
+                    } else {
+                        alert("Erro!");                        
+                    };
+                })
+                .catch(function (res) { console.log(res)})    
+            } 
+
+            
+        formularioReserva.addEventListener('submit', function (event) {
+        event.preventDefault();
+
+        reservar();           
+            
+    });
+        </script>
+    </main>
+</body>
+</html>

@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Consulta Usuários | Condomínio Blue Coast</title>
+    <style>
+        .consulta {
+            background-color: var(--escuro);
+            padding-bottom: 670px;           
+        }       
+
+        h1 {
+            color: var(--claro);
+            padding-left: 100px;
+            padding-top: 30px;
+            padding-bottom: 10px;
+        }
+
+        #listaUsuarios {
+            margin-left: 100px;            
+        }
+
+        #listaUsuarios th, td {
+            padding: 1px 10px;                     
+            background-color: var(--claro);              
+        }
+
+        button {
+            background-color: var(--claro);
+            cursor: pointer;
+        }
+
+        .modal {
+            background-color: #00000055;
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 100vw;
+            display: none;
+            justify-content: center;  
+            align-items: center;
+            height: 100vh;
+            z-index: 999;
+        }
+    </style>
+</head>
+<body>
+    <div class="consulta">    
+        <h1>Lista de Usuários Cadastrados</h1>
+        <table id="listaUsuarios">
+            <thead>
+                <th>ID</th>
+                <th>NOME</th>
+                <th>CPF</th>
+                <th>TELEFONE</th>
+                <th>BLOCO</th>
+                <th>APARTAMENTO</th>
+                <th colspan="2">RESERVAS</th>
+                <th colspan="2">AÇÃO</th>                
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+
+    <div class="modal">
+        <form action="usuario" method="post">
+            <div>
+                <label for="nome"></label>
+                <input class="input" type="text" name="nome"  placeholder="Nome" id="nome" required>
+            </div>
+            <div>
+                <label for="cpf"></label>
+                <input class="input" type="text" name="cpf"  placeholder="CPF" id="cpf" required>
+            </div>
+            <div class="telefone">
+                <label for="telefone"></label>
+                <input class="input" type="text" name="telefone"  placeholder="Telefone" id="telefone" required>
+            </div>     
+            <div class="bloco">
+                <label for="bloco"></label>
+                <input class="input" type="text" name="bloco" placeholder="Bloco" id="bloco" required>
+            </div>     
+            <div class="apartamento">
+                <label for="apartamento"></label>
+                <input class="input" type="text" name="apartamento"  placeholder="Apartamento" id="apartamento" required>
+            </div>     
+        </form>              
+    </div>
+
+    <script>
+
+        const url = "http://localhost:8081/usuario";
+        const lista = document.querySelector("#listaUsuarios");
+        
+        async function consultarUsuarios() {
+            const response = await fetch(url);
+
+            const data = await response.json();
+           
+            data.map((post, indice) => {
+                
+                tr = document.createElement("tr");
+
+                id = document.createElement("td");
+                nome = document.createElement("td");
+                cpf = document.createElement("td");
+                telefone = document.createElement("td");
+                bloco = document.createElement("td");
+                apartamento = document.createElement("td");
+                reserva = document.createElement("td");
+                reserva1 = document.createElement("td");                
+                botaoEditar = document.createElement("td");
+                botaoExcluir = document.createElement("td");
+                            
+                id.innerHTML = post.id;
+                nome.innerHTML = post.nome;
+                cpf.innerHTML = post.cpf;
+                telefone.innerHTML = post.telefone;
+                bloco.innerHTML = post.bloco;
+                apartamento.innerHTML = post.apartamento;
+
+                if (post.reservas[0] == undefined) {
+                    reserva.innerHTML = "----------";
+                    reserva1.innerHTML = "----------";
+                } else {
+                    reserva.innerHTML = post.reservas[0].dataReserva;
+                    reserva1.innerHTML = post.reservas[0].tipoDeArea;                    
+                }
+                
+                var editar = document.createElement('button')
+                editar.innerHTML = "EDITAR"
+                editar.setAttribute('onclick', 'editarUsuario()')
+
+                var excluir = document.createElement('button')
+                excluir.innerHTML = "EXCLUIR"                
+                excluir.setAttribute('onclick', 'excluirUsuario('+post.id+')')
+
+                botaoEditar.appendChild(editar);
+                botaoExcluir.appendChild(excluir);
+
+                tr.appendChild(id);
+                tr.appendChild(nome);
+                tr.appendChild(cpf);
+                tr.appendChild(telefone);
+                tr.appendChild(bloco);
+                tr.appendChild(apartamento);
+                tr.appendChild(reserva);
+                tr.appendChild(reserva1);                
+                tr.appendChild(botaoEditar);
+                tr.appendChild(botaoExcluir);
+                                
+                listaUsuarios.appendChild(tr);
+                
+            });
+
+        }   
+
+        function editarUsuario(posicao) {
+            const modal = document.querySelector(".modal");
+            modal.style.display = "flex";
+
+            const url = `http://localhost:8081/usuario/${posicao}`;
+            console.log("posicao")
+            
+            fetch(url,
+            {
+                headers: {
+                    "Accept": "application/json",
+                    "Content-Type": "application/json"
+                },
+                method: "PUT",
+                body: JSON.stringify({
+                    nome: INome.value,
+                    cpf: ICpf.value,
+                    telefone: ITelefone.value,
+                    bloco: IBloco.value,
+                    apartamento: IApartamento.value, 
+                    senha: ISenha.value           
+                })
+            }) 
+            .then(function (res) { console.log(res)})
+            .catch(function (res) { console.log(res)})                        
+        }
+        
+        function excluirUsuario(posicao) {
+            const url = `http://localhost:8081/usuario/${posicao}`;
+            
+
+            fetch(url,
+        {
+            headers: {
+                "Accept": "application/json",
+                "Content-Type": "application/json"
+            },
+            method: "DELETE"            
+        }) 
+        .then(function (res) { console.log(res)})
+        .catch(function (res) { console.log(res)})
+            }
+        
+        consultarUsuarios();
+    </script>
+
+</body>
+</html>

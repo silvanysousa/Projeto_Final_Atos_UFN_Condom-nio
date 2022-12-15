@@ -1,0 +1,112 @@
+@import url('https://fonts.googleapis.com/css2?family=Corben:wght@400;700&display=swap');
+
+
+* {
+    margin: 0;
+    padding: 0;
+    color: inherit;
+    font-family: 'Corben', cursive;
+    color: var(--escuro);
+    border: none;
+    list-style: none;
+    text-decoration: none;
+}
+
+:root {
+    --escuro: #26477d;
+    --medio: #45a5cd;
+    --claro: #abcef4;
+
+    --transparente: #45a4cdcc;
+}
+
+body {
+    
+    background-image: url(imagens/236591412.jpg);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+}
+
+.bg {
+    background-color: var(--transparente);
+    margin: auto;
+    width: 700px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 10px;
+    margin-top: 100px;   
+    padding: 50px; 
+    box-shadow: 5px 5px 10px var(--escuro);
+}
+
+.container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 60px;
+}
+
+.container img {
+    border-radius: 10px;
+}
+
+.container nav li a {
+    font-size: 16px;
+    color: var(--escuro);
+    text-transform: uppercase;
+}
+
+.formulario h1 {
+    font-size: 22px;
+    padding-bottom: 30px;
+}
+
+.input {
+    padding: 5px 0px 5px 10px;
+    background-color: var(--claro);    
+    border-radius: 10px;
+    width: 250px;
+    margin-bottom: 10px;
+}
+
+.botao {
+    margin-top: 20px;
+    margin-right: 10px;
+    margin-left: 15px;
+    width: 100px;
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    background-color: var(--claro);    
+    border-radius: 10px;
+    
+}
+
+.formulario a {
+    font-size: 12px;
+    margin-left: 10px;
+}
+
+.pergunta {
+    margin-top: 30px;
+}
+
+.pergunta:hover a {
+    font-size: 14px;    
+    color: var(--claro);
+}
+
+.select {
+    background-color: var(--claro);  
+    border-radius: 5px;  
+}
+
+.unidade {
+    font-size: 19px;
+}
+
+.senha {
+    padding-top: 10px;
+}
